@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+const {lang='ko'}=Astro.props;
+const en=lang==='en';
+const experiences=en ? [
+ {date:'2024–2025',name:'NAVER Map · 3D maps',text:'Worked on backend services, spatial data pipelines, and caching for 3D maps.'},
+ {date:'2021',name:'Bloom',text:'Co-founded a fashion discovery platform and built its backend and data pipelines.'},
+ {date:'2020–2021',name:'NoSearch',text:'Built pipelines to collect product and pricing data for a home appliance recommendation service.'}
+] : [
+ {date:'2024–2025',name:'네이버 지도 · 3D 지도',text:'3D 지도의 백엔드, 공간 데이터 파이프라인과 캐싱을 개발했습니다.'},
+ {date:'2021',name:'Bloom',text:'패션 탐색 플랫폼을 공동 창업하고 백엔드와 데이터 파이프라인을 만들었습니다.'},
+ {date:'2020–2021',name:'NoSearch',text:'가전 추천 서비스의 상품·가격 데이터를 수집하는 파이프라인을 개발했습니다.'}
+];
+---
+<Base lang={lang} title={en ? 'About — Shinyook' : '소개 — Shinyook'}>
+<article class="prose about">
+ <h1>Shinyook Lee</h1>
+ <p class="role">Software engineer · London, UK</p>
+ <p>{en ? 'I’m a software engineer living in London. My wife and I moved here in September 2026.' : '런던에 살고 있는 소프트웨어 엔지니어입니다. 2026년 9월, 아내와 함께 영국으로 왔습니다.'}</p>
+ <p>{en ? 'I write about development, things I’m learning, and everyday life in the UK.' : '개발하며 배운 것들과 공부한 내용, 영국에서의 일상을 기록합니다.'}</p>
+ <div class="links"><a href="https://www.linkedin.com/in/shinyook-lee">LinkedIn ↗</a><a href="https://github.com/shinyook">GitHub ↗</a></div>
+ <section aria-labelledby="experience"><h2 id="experience">{en ? 'Experience' : '경험'}</h2>
+ <ol class="experience">{experiences.map(item=><li><span class="date">{item.date}</span><div><h3>{item.name}</h3><p>{item.text}</p></div></li>)}</ol>
+ </section>
+ <section aria-labelledby="outside"><h2 id="outside">{en ? 'Outside of work' : '일 밖에서는'}</h2>
+ <p>{en ? 'I enjoy running and take an interest in running shoes. I also like exploring ergonomic keyboards.' : '러닝을 좋아하고, 러닝화에 관심이 많습니다. 인체공학 키보드를 찾아보는 것도 좋아합니다.'}</p>
+ </section>
+</article>
+</Base>
+<style>
+.about{margin-top:54px}.about h1{font-size:34px;margin-bottom:4px}.role{color:var(--muted);font-size:14px;margin-top:0;margin-bottom:30px}.about>p{font-size:16px}.links{display:flex;gap:24px;margin:25px 0 48px;font-size:14px}.about section h2{font-size:19px;font-weight:600;margin:38px 0 22px}.experience{list-style:none;padding:0;margin:0}.experience li{display:grid;grid-template-columns:110px 1fr;gap:20px;padding:21px 0;border-top:1px solid var(--line)}.date{font-size:12px;color:var(--muted);padding-top:3px}.experience h3{font-size:16px;font-weight:600;letter-spacing:-.02em;margin:0 0 7px}.experience p{font-size:14px;color:var(--muted);margin:0}#outside+p{font-size:15px}@media(max-width:600px){.about{margin-top:38px}.experience li{grid-template-columns:1fr;gap:7px}.about h1{font-size:30px}}
+</style>
