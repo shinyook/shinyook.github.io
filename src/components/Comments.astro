@@ -1,0 +1,44 @@
+---
+const {lang='ko', slug}=Astro.props;
+const en=lang==='en';
+---
+<section class="comments" aria-label={en ? 'Comments' : '댓글'}>
+  <h2>{en ? 'Comments' : '댓글'}</h2>
+  <p class="muted">{en ? 'Sign in with GitHub to leave a comment. Comments are public.' : 'GitHub 계정으로 로그인해 댓글을 남길 수 있어요. 댓글은 공개됩니다.'}</p>
+  <p id="comments-unavailable" class="muted" role="status" hidden>{en ? 'Comments are being connected. Please check back soon.' : '댓글 기능을 연결하고 있어요. 잠시 후 다시 방문해주세요.'}</p>
+  <div class="giscus"></div>
+  <script is:inline src="https://giscus.app/client.js"
+    data-repo="shinyook/shinyook.github.io"
+    data-repo-id="R_kgDOVgk8jQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOVgk8jc4DKPkT"
+    data-mapping="specific"
+    data-term={'posts/'+slug}
+    data-strict="1"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang={lang}
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async></script>
+  <noscript><a href="https://github.com/shinyook/shinyook.github.io/discussions">{en ? 'View comments on GitHub ↗' : 'GitHub에서 댓글 보기 ↗'}</a></noscript>
+</section>
+<script>
+window.addEventListener('message',event=>{
+ if(event.origin!=='https://giscus.app' || event.source!==frame()?.contentWindow)return;
+ const error=event.data?.giscus?.error;
+ if(typeof error==='string' && error.toLowerCase().includes('not installed')){
+  document.querySelector<HTMLElement>('.giscus')!.hidden=true;
+  document.querySelector<HTMLElement>('#comments-unavailable')!.hidden=false;
+ }
+});
+const frame=()=>document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+const syncTheme=()=>frame()?.contentWindow?.postMessage({giscus:{setConfig:{theme:document.documentElement.dataset.theme==='dark'?'dark':'light'}}},'https://giscus.app');
+new MutationObserver(syncTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+const watchFrame=new MutationObserver(()=>{const iframe=frame();if(iframe){iframe.addEventListener('load',syncTheme,{once:true});syncTheme();watchFrame.disconnect()}});
+watchFrame.observe(document.querySelector('.giscus')!,{childList:true,subtree:true});
+if(frame()){frame()!.addEventListener('load',syncTheme,{once:true});syncTheme();watchFrame.disconnect()}
+</script>
+<style>.comments{border-top:1px solid var(--line);margin-top:64px;padding-top:30px}.comments h2{font-size:22px;margin:0}.comments p{font-size:13px;margin:10px 0 24px}</style>

@@ -1,4 +1,5 @@
 ---
+import Comments from '../../../components/Comments.astro';
 import Base from '../../../layouts/Base.astro';
 export async function getStaticPaths(){const posts=Object.values(import.meta.glob('../../../posts-en/*.md',{eager:true}));return posts.filter(p=>p.frontmatter.published===true).map(p=>({params:{slug:p.file.split('/').pop()?.replace('.md','')},props:{post:p}}))}
 const {post}=Astro.props;const {Content,frontmatter:f}=post;
@@ -6,4 +7,4 @@ const categories={'개발':'Development','공부':'Learning','일상':'Life','�
 const translated=Object.values(import.meta.glob('../../../content/posts/*.md',{eager:true})).some(p=>p.frontmatter.published===true && p.file.split('/').pop()===post.file.split('/').pop());
 const alternate=translated ? Astro.url.pathname.replace(/^\/en/,'') : '/';
 ---
-<Base lang="en" alternate={alternate} title={f.title+' — Shinyook'} description={f.description}><article class="prose"><a href="/en/" class="muted">← All entries</a><p class="eyebrow">{categories[f.category]} · {new Date(f.date).toISOString().slice(0,10)}</p><h1>{f.title}</h1>{f.cover && <img src={f.cover} alt=""/>}<Content/></article></Base>
+<Base lang="en" alternate={alternate} title={f.title+' — Shinyook'} description={f.description}><article class="prose"><a href="/en/" class="muted">← All entries</a><p class="eyebrow">{categories[f.category]} · {new Date(f.date).toISOString().slice(0,10)}</p><h1>{f.title}</h1>{f.cover && <img src={f.cover} alt=""/>}<Content/><Comments lang="en" slug={Astro.params.slug}/></article></Base>
