@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-export async function getStaticPaths(){const posts=await Astro.glob('../../content/posts/*.md');return posts.filter(p=>p.frontmatter.published===true).map(p=>({params:{slug:p.file.split('/').pop()?.replace('.md','')},props:{post:p}}))}
+export async function getStaticPaths(){const posts=Object.values(import.meta.glob('../../content/posts/*.md',{eager:true}));return posts.filter(p=>p.frontmatter.published===true).map(p=>({params:{slug:p.file.split('/').pop()?.replace('.md','')},props:{post:p}}))}
 const {post}=Astro.props;
 const translated=Object.values(import.meta.glob('../../posts-en/*.md',{eager:true})).some(p=>p.frontmatter.published===true && p.file.split('/').pop()===post.file.split('/').pop());
 const alternate=translated ? '/en'+Astro.url.pathname : '/en/';const {Content,frontmatter:f}=post;
