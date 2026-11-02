@@ -1,0 +1,48 @@
+media:
+  input: public/images
+  output: /images
+content:
+  - name: posts
+    label: 글 관리
+    type: collection
+    path: src/content/posts
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: date
+      order: desc
+    fields:
+      - name: title
+        label: 제목
+        type: string
+        required: true
+      - name: description
+        label: 짧은 소개
+        type: text
+        required: true
+      - name: date
+        label: 날짜
+        type: date
+        required: true
+      - name: category
+        label: 카테고리
+        type: select
+        options:
+          values: [개발, 공부, 일상, 에세이]
+        required: true
+      - name: tags
+        label: 태그
+        type: string
+        list: true
+      - name: cover
+        label: 대표 이미지
+        type: image
+      - name: published
+        label: 블로그에 공개
+        type: boolean
+        default: false
+        description: "주의: 꺼두어도 글 파일은 공개 GitHub 저장소에 저장됩니다. 비밀이나 개인정보는 작성하지 마세요."
+      - name: body
+        label: 본문
+        type: rich-text
